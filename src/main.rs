@@ -1,5 +1,5 @@
-use std::fs::*;
-use std::io::{Error, stdout};
+// use std::fs::*;
+use std::io::{stdout, BufWriter};
 use ferris_says::say;
 
 fn main() {
@@ -15,5 +15,11 @@ fn main() {
     println!("{}", s);
     s = "💜💙💚💛🧡❤️";
     println!("{}", s);
-    let _ = say(b"Hey there", 80, &mut stdout().lock());
+    let stdout = stdout();
+    let message = String::from("Hey there!");
+    let width = message.chars().count();
+
+    let mut writer: BufWriter<std::io::StdoutLock<'_>> = BufWriter::new(stdout.lock());
+
+    let _ = say(message.as_bytes(), width, &mut writer).unwrap();
 }
